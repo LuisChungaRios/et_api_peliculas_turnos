@@ -16,10 +16,6 @@ use App\Http\Controllers\Admin\FilmController as AdminFilmController;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::namespace('Auth')->prefix('auth')->group( function () {
 
     Route::post('login',[LoginController::class, 'login']);
@@ -27,7 +23,7 @@ Route::namespace('Auth')->prefix('auth')->group( function () {
     Route::post('logout', [LoginController::class, 'logout'])->middleware('auth:api');
 });
 
-Route::middleware(['auth:api','Admin'])->namespace('Admin')->prefix('admin')->group( function () {
+Route::middleware(['auth:api','Admin'])->prefix('admin')->group( function () {
 
     Route::resource('hours', AdminHourController::class);
     Route::resource('films', AdminFilmController::class);

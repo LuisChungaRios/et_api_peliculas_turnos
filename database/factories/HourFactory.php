@@ -22,7 +22,8 @@ class HourFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'hour' => $this->faker->dateTime->format('H:i'),
+            'active' => $this->faker->boolean
         ];
     }
 }

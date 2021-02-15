@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\HourController as AdminHourController;
 use App\Http\Controllers\Admin\FilmController as AdminFilmController;
+use App\Http\Controllers\Admin\FilmHourController as AdminFilmHourController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -27,6 +28,6 @@ Route::middleware(['auth:api','Admin'])->prefix('admin')->group( function () {
 
     Route::resource('hours', AdminHourController::class);
     Route::resource('films', AdminFilmController::class);
-
+    Route::resource('filmhours', AdminFilmHourController::class);
 });
 

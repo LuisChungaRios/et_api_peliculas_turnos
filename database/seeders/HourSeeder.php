@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Film;
+use App\Models\Hour;
 use Illuminate\Database\Seeder;
 
 class HourSeeder extends Seeder
@@ -13,6 +15,6 @@ class HourSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Hour::factory()->count(10)->has(Film::factory()->count(2),'')->create();
     }
 }

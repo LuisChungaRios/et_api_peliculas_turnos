@@ -3,83 +3,86 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FilmHourFormRequest;
+use App\Models\FilmHour;
+use App\Repositories\FilmHourRepository;
+use App\Repositories\HourRepository;
+use App\Utils\Responses;
 use Illuminate\Http\Request;
 
 class FilmHourController extends Controller
 {
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @var HourRepository
      */
+    private $filmHourRepository;
+
+    public function __construct(FilmHourRepository $filmHourRepository)
+    {
+        $this->filmHourRepository = $filmHourRepository;
+    }
+
     public function index()
     {
-        //
+        return Responses::success("show hours", [
+            'data' => $this->filmHourRepository->getAll()
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(FilmHourFormRequest $request)
     {
-        //
+        if ($this->alreadyExistFilmHour($request->hour_id, $request->film_id)) {
+            return Responses::error('Already exist filmHour', 400);
+        }
+        $filmHour = $this->filmHourRepository->store($request);
+        return Responses::success("hour created", [
+            'data' => $filmHour
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function show(FilmHour $filmhour)
     {
-        //
+
+        return Responses::success("show film hour", [
+            'data' => $filmhour
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+
+    public function update(FilmHourFormRequest $request, FilmHour $filmhour)
     {
-        //
+        if ($this->filmHourNotEquals($filmhour, $request)) {
+            if ($this->alreadyExistFilmHour($request->hour_id, $request->film_id)) {
+                return Responses::error('Already exist filmHour', 400);
+            }
+        }
+
+        $filmHourUpdated = $this->filmHourRepository->update($filmhour, $request);
+        return Responses::success("hour updated", [
+            'data' => $filmHourUpdated
+        ]);
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+
+    public function destroy(FilmHour $filmhour)
     {
-        //
+        $this->filmHourRepository->delete($filmhour);
+        return Responses::success('success delete hour');
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    private function alreadyExistFilmHour($hourId, $filmId) :bool
     {
-        //
+        $filmHour = FilmHour::query()->whereHourId($hourId)->whereFilmId($filmId)->first();
+        if (! empty($filmHour)) return true;
+        return false;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    private function filmHourNotEquals($filmhour, $request)
     {
-        //
+        return $filmhour->hour_id != $request->hour_id || $filmhour->film_id != $request->film_id;
     }
+
 }

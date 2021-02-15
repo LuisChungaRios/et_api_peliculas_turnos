@@ -13,7 +13,7 @@ class CreateFilmHoursTable extends Migration
      */
     public function up()
     {
-        Schema::create('film_hours', function (Blueprint $table) {
+        Schema::create('film_hour', function (Blueprint $table) {
             $table->id();
             $table->foreignId('film_id')->constrained();
             $table->foreignId('hour_id')->constrained();

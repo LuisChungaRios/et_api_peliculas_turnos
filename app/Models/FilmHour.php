@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class FilmHour extends Model
 {
     use HasFactory;
+
+    protected $table = 'film_hour';
+
 }

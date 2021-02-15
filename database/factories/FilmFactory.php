@@ -22,7 +22,11 @@ class FilmFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->name,
+            'publication_date' => $this->faker->date(),
+            'image' => $this->faker->imageUrl(),
+            'active' => $this->faker->boolean
+
         ];
     }
 }

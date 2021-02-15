@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FilmFormRequest;
 use App\Models\Film;
 use App\Repositories\FilmRepository;
 use App\Utils\Responses;
@@ -30,7 +31,7 @@ class FilmController extends Controller
 
 
 
-    public function store(Request $request)
+    public function store(FilmFormRequest $request)
     {
        $film = $this->filmRepository->store($request);
         return Responses::success("success create", [
@@ -46,7 +47,7 @@ class FilmController extends Controller
     }
 
 
-    public function update(Request $request, Film $film)
+    public function update(FilmFormRequest $request, Film $film)
     {
         $filmUpdated = $this->filmRepository->update($film, $request);
         return Responses::success("success create", [

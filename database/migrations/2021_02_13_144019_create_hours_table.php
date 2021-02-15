@@ -15,7 +15,7 @@ class CreateHoursTable extends Migration
     {
         Schema::create('hours', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('hour');
+            $table->time('hour');
             $table->boolean('active')->default(true);
             $table->timestamps();
         });

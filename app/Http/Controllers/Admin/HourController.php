@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\HourFormRequest;
 use App\Models\Hour;
 use App\Repositories\HourRepository;
 use App\Utils\Responses;
@@ -22,35 +23,40 @@ class HourController extends Controller
 
     public function index()
     {
-        return Responses::success("show films", [
+        return Responses::success("show hours", [
             'data' => $this->hourRepository->getAll()
         ]);
     }
 
-    public function store(Request $request)
+    public function store(HourFormRequest $request)
     {
-        $this->hourRepository->store($request);
+        $hour = $this->hourRepository->store($request);
+        return Responses::success("hour created", [
+            'data' => $hour
+        ]);
     }
 
     public function show(Hour $hour)
     {
-        return Responses::success("show film", [
+        return Responses::success("show hour", [
             'data' => $hour
         ]);
     }
 
 
-    public function update(Request $request, Hour $hour)
+    public function update(HourFormRequest $request, Hour $hour)
     {
-        $this->hourRepository->update($hour, $request);
+        $hourUpdated = $this->hourRepository->update($hour, $request);
+        return Responses::success("hour updated", [
+            'data' => $hourUpdated
+        ]);
     }
 
 
     public function destroy(Hour $hour)
     {
         $this->hourRepository->delete($hour);
-
-        return Responses::success('success delete film');
+        return Responses::success('success delete hour');
 
     }
 }

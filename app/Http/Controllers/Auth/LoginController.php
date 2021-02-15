@@ -33,7 +33,7 @@ class LoginController extends  Controller
         $credentials = request(['email', 'password']);
 
         if (!Auth::attempt($credentials))
-            return Responses::error('Unauthorized', 403);
+            return Responses::error('Incorrect credentials', 401);
 
         $user = $request->user();
         $tokenResult = $user->createToken('Personal Access Token');
